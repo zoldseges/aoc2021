@@ -4,272 +4,236 @@ use crate::Puzzle;
 
 pub fn get_puzzles() -> Vec<Puzzle> {
     let mut vec = Vec::new();
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 1,
-	name_p1: puzzles::day01::part1::name(),
-	name_p2: puzzles::day01::part2::name(),
-	solve_p1: puzzles::day01::part1::solve,
-	solve_p2: puzzles::day01::part2::solve,
+	name: puzzles::day01::name(),
+	solve_p1: puzzles::day01::solve_p1,
+	solve_p2: puzzles::day01::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 2,
-	name_p1: puzzles::day02::part1::name(),
-	name_p2: puzzles::day02::part2::name(),
-	solve_p1: puzzles::day02::part1::solve,
-	solve_p2: puzzles::day02::part2::solve,
+	name: puzzles::day02::name(),
+	solve_p1: puzzles::day02::solve_p1,
+	solve_p2: puzzles::day02::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 3,
-	name_p1: puzzles::day03::part1::name(),
-	name_p2: puzzles::day03::part2::name(),
-	solve_p1: puzzles::day03::part1::solve,
-	solve_p2: puzzles::day03::part2::solve,
+	name: puzzles::day03::name(),
+	solve_p1: puzzles::day03::solve_p1,
+	solve_p2: puzzles::day03::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 4,
-	name_p1: puzzles::day04::part1::name(),
-	name_p2: puzzles::day04::part2::name(),
-	solve_p1: puzzles::day04::part1::solve,
-	solve_p2: puzzles::day04::part2::solve,
+	name: puzzles::day04::name(),
+	solve_p1: puzzles::day04::solve_p1,
+	solve_p2: puzzles::day04::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 5,
-	name_p1: puzzles::day05::part1::name(),
-	name_p2: puzzles::day05::part2::name(),
-	solve_p1: puzzles::day05::part1::solve,
-	solve_p2: puzzles::day05::part2::solve,
+	name: puzzles::day05::name(),
+	solve_p1: puzzles::day05::solve_p1,
+	solve_p2: puzzles::day05::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 6,
-	name_p1: puzzles::day06::part1::name(),
-	name_p2: puzzles::day06::part2::name(),
-	solve_p1: puzzles::day06::part1::solve,
-	solve_p2: puzzles::day06::part2::solve,
+	name: puzzles::day06::name(),
+	solve_p1: puzzles::day06::solve_p1,
+	solve_p2: puzzles::day06::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 7,
-	name_p1: puzzles::day07::part1::name(),
-	name_p2: puzzles::day07::part2::name(),
-	solve_p1: puzzles::day07::part1::solve,
-	solve_p2: puzzles::day07::part2::solve,
+	name: puzzles::day07::name(),
+	solve_p1: puzzles::day07::solve_p1,
+	solve_p2: puzzles::day07::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 8,
-	name_p1: puzzles::day08::part1::name(),
-	name_p2: puzzles::day08::part2::name(),
-	solve_p1: puzzles::day08::part1::solve,
-	solve_p2: puzzles::day08::part2::solve,
+	name: puzzles::day08::name(),
+	solve_p1: puzzles::day08::solve_p1,
+	solve_p2: puzzles::day08::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 9,
-	name_p1: puzzles::day09::part1::name(),
-	name_p2: puzzles::day09::part2::name(),
-	solve_p1: puzzles::day09::part1::solve,
-	solve_p2: puzzles::day09::part2::solve,
+	name: puzzles::day09::name(),
+	solve_p1: puzzles::day09::solve_p1,
+	solve_p2: puzzles::day09::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 10,
-	name_p1: puzzles::day10::part1::name(),
-	name_p2: puzzles::day10::part2::name(),
-	solve_p1: puzzles::day10::part1::solve,
-	solve_p2: puzzles::day10::part2::solve,
+	name: puzzles::day10::name(),
+	solve_p1: puzzles::day10::solve_p1,
+	solve_p2: puzzles::day10::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 10,
-	name_p1: puzzles::day10::part1::name(),
-	name_p2: puzzles::day10::part2::name(),
-	solve_p1: puzzles::day10::part1::solve,
-	solve_p2: puzzles::day10::part2::solve,
+	name: puzzles::day10::name(),
+	solve_p1: puzzles::day10::solve_p1,
+	solve_p2: puzzles::day10::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 11,
-	name_p1: puzzles::day11::part1::name(),
-	name_p2: puzzles::day11::part2::name(),
-	solve_p1: puzzles::day11::part1::solve,
-	solve_p2: puzzles::day11::part2::solve,
+	name: puzzles::day11::name(),
+	solve_p1: puzzles::day11::solve_p1,
+	solve_p2: puzzles::day11::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 12,
-	name_p1: puzzles::day12::part1::name(),
-	name_p2: puzzles::day12::part2::name(),
-	solve_p1: puzzles::day12::part1::solve,
-	solve_p2: puzzles::day12::part2::solve,
+	name: puzzles::day12::name(),
+	solve_p1: puzzles::day12::solve_p1,
+	solve_p2: puzzles::day12::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 13,
-	name_p1: puzzles::day13::part1::name(),
-	name_p2: puzzles::day13::part2::name(),
-	solve_p1: puzzles::day13::part1::solve,
-	solve_p2: puzzles::day13::part2::solve,
+	name: puzzles::day13::name(),
+	solve_p1: puzzles::day13::solve_p1,
+	solve_p2: puzzles::day13::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 14,
-	name_p1: puzzles::day14::part1::name(),
-	name_p2: puzzles::day14::part2::name(),
-	solve_p1: puzzles::day14::part1::solve,
-	solve_p2: puzzles::day14::part2::solve,
+	name: puzzles::day14::name(),
+	solve_p1: puzzles::day14::solve_p1,
+	solve_p2: puzzles::day14::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 15,
-	name_p1: puzzles::day15::part1::name(),
-	name_p2: puzzles::day15::part2::name(),
-	solve_p1: puzzles::day15::part1::solve,
-	solve_p2: puzzles::day15::part2::solve,
+	name: puzzles::day15::name(),
+	solve_p1: puzzles::day15::solve_p1,
+	solve_p2: puzzles::day15::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 16,
-	name_p1: puzzles::day16::part1::name(),
-	name_p2: puzzles::day16::part2::name(),
-	solve_p1: puzzles::day16::part1::solve,
-	solve_p2: puzzles::day16::part2::solve,
+	name: puzzles::day16::name(),
+	solve_p1: puzzles::day16::solve_p1,
+	solve_p2: puzzles::day16::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 17,
-	name_p1: puzzles::day17::part1::name(),
-	name_p2: puzzles::day17::part2::name(),
-	solve_p1: puzzles::day17::part1::solve,
-	solve_p2: puzzles::day17::part2::solve,
+	name: puzzles::day17::name(),
+	solve_p1: puzzles::day17::solve_p1,
+	solve_p2: puzzles::day17::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 18,
-	name_p1: puzzles::day18::part1::name(),
-	name_p2: puzzles::day18::part2::name(),
-	solve_p1: puzzles::day18::part1::solve,
-	solve_p2: puzzles::day18::part2::solve,
+	name: puzzles::day18::name(),
+	solve_p1: puzzles::day18::solve_p1,
+	solve_p2: puzzles::day18::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 19,
-	name_p1: puzzles::day19::part1::name(),
-	name_p2: puzzles::day19::part2::name(),
-	solve_p1: puzzles::day19::part1::solve,
-	solve_p2: puzzles::day19::part2::solve,
+	name: puzzles::day19::name(),
+	solve_p1: puzzles::day19::solve_p1,
+	solve_p2: puzzles::day19::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 20,
-	name_p1: puzzles::day20::part1::name(),
-	name_p2: puzzles::day20::part2::name(),
-	solve_p1: puzzles::day20::part1::solve,
-	solve_p2: puzzles::day20::part2::solve,
+	name: puzzles::day20::name(),
+	solve_p1: puzzles::day20::solve_p1,
+	solve_p2: puzzles::day20::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 21,
-	name_p1: puzzles::day21::part1::name(),
-	name_p2: puzzles::day21::part2::name(),
-	solve_p1: puzzles::day21::part1::solve,
-	solve_p2: puzzles::day21::part2::solve,
+	name: puzzles::day21::name(),
+	solve_p1: puzzles::day21::solve_p1,
+	solve_p2: puzzles::day21::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 22,
-	name_p1: puzzles::day22::part1::name(),
-	name_p2: puzzles::day22::part2::name(),
-	solve_p1: puzzles::day22::part1::solve,
-	solve_p2: puzzles::day22::part2::solve,
+	name: puzzles::day22::name(),
+	solve_p1: puzzles::day22::solve_p1,
+	solve_p2: puzzles::day22::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 23,
-	name_p1: puzzles::day23::part1::name(),
-	name_p2: puzzles::day23::part2::name(),
-	solve_p1: puzzles::day23::part1::solve,
-	solve_p2: puzzles::day23::part2::solve,
+	name: puzzles::day23::name(),
+	solve_p1: puzzles::day23::solve_p1,
+	solve_p2: puzzles::day23::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 24,
-	name_p1: puzzles::day24::part1::name(),
-	name_p2: puzzles::day24::part2::name(),
-	solve_p1: puzzles::day24::part1::solve,
-	solve_p2: puzzles::day24::part2::solve,
+	name: puzzles::day24::name(),
+	solve_p1: puzzles::day24::solve_p1,
+	solve_p2: puzzles::day24::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };
     vec.push(puzzle);
-    let mut puzzle = Puzzle {
+    let puzzle = Puzzle {
 	day: 25,
-	name_p1: puzzles::day25::part1::name(),
-	name_p2: puzzles::day25::part2::name(),
-	solve_p1: puzzles::day25::part1::solve,
-	solve_p2: puzzles::day25::part2::solve,
-	solution_p1: None,
-	solution_p2: None,
-    };
-    vec.push(puzzle);
-    let mut puzzle = Puzzle {
-	day: 25,
-	name_p1: puzzles::day25::part1::name(),
-	name_p2: puzzles::day25::part2::name(),
-	solve_p1: puzzles::day25::part1::solve,
-	solve_p2: puzzles::day25::part2::solve,
+	name: puzzles::day25::name(),
+	solve_p1: puzzles::day25::solve_p1,
+	solve_p2: puzzles::day25::solve_p2,
 	solution_p1: None,
 	solution_p2: None,
     };

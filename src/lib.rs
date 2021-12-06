@@ -4,8 +4,7 @@ mod get_puzzles;
 
 pub struct Puzzle {
     day: i8,
-    name_p1: Option<String>,
-    name_p2: Option<String>,
+    name: Option<String>,
     solve_p1: fn() -> Option<String>,
     solve_p2: fn() -> Option<String>,
     solution_p1: Option<String>,
@@ -22,12 +21,8 @@ impl Puzzle {
 	&self.day
     }
 
-    pub fn get_name_part1(&self) -> &Option<String> {
-	&self.name_p1
-    }
-
-    pub fn get_name_part2(&self) -> &Option<String> {
-	&self.name_p2
+    pub fn get_name(&self) -> &Option<String> {
+	&self.name
     }
     
     pub fn get_solution_part1(&self) -> &Option<String> {
@@ -41,7 +36,7 @@ impl Puzzle {
 }
 
 pub fn init() -> Vec<Puzzle> {
-    let mut vec = get_puzzles::get_puzzles();
+    let vec = get_puzzles::get_puzzles();
     vec
 }
 
