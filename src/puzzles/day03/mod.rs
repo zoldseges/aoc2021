@@ -8,7 +8,10 @@ pub fn solve_p1() -> Option<String> {
 }
 
 pub fn solve_p2() -> Option<String> {
-    None
+    let input = include_str!("input.txt");
+    let oxy = get_part_p2(input, true);
+    let co = get_part_p2(input, false);
+    Some((oxy * co).to_string())
 }
 
 pub fn get_solution_p1(input: &str) -> String {
@@ -50,50 +53,54 @@ pub fn get_solution_p1(input: &str) -> String {
 pub fn get_part_p2(input: &str, oxy: bool) -> i32 {
     let mut node = &mut Node::new();
     let mut res_string = String::new();
-    let mut cmp: i32;
     for line in input.lines() {
 	node.add_str_to_tree(line);
     }
     loop {
-	if node.get_side_node(0).get_count() == 0 &&
-	    node.get_side_node(1).get_count() == 0 {
-		break;
+	match (node.get_side_node(0).get_count(),
+	       node.get_side_node(1).get_count()) {
+	    (0, 0) => break,
+	    (0, _) => {
+		res_string += "1";
+		node = node.get_side_node(1);
 	    }
-	cmp = node.get_side_node(0).get_count() -
-	    node.get_side_node(1).get_count();
-	if oxy {
-	    match cmp {
-		i32::MIN..=-1 => {
-		    node = node.get_side_node(1);
-		    res_string += "1";
-		}
-		1..=i32::MAX => {
-		    node = node.get_side_node(0);
-		    res_string += "0";
-		}
-		0 => {
-		    node = node.get_side_node(1);
-		    res_string += "1";
-		}
+	    (_, 0) => {
+		res_string += "0";
+		node = node.get_side_node(0);
 	    }
-	} else {
-	    match cmp {
-		i32::MIN..=-1 => {
-		    node = node.get_side_node(0);
-		    res_string += "0";
+	    (left_0, right_1) => {
+		match left_0 - right_1 {
+		    i32::MIN..=-1 => {
+			if oxy {
+			    node = node.get_side_node(1);
+			    res_string += "1";
+			} else {
+			    node = node.get_side_node(0);
+			    res_string += "0";
+			}
+		    }
+		    1..=i32::MAX => {
+			if oxy {
+			    node = node.get_side_node(0);
+			    res_string += "0";
+			} else {
+			    node = node.get_side_node(1);
+			    res_string += "1";
+			}
+		    }
+		    _ => {
+			if oxy {
+			    node = node.get_side_node(1);
+			    res_string += "1";
+			} else {
+			    node = node.get_side_node(0);
+			    res_string += "0";
+			}
+		    }
 		}
-		1..=i32::MAX=> {
-		    node = node.get_side_node(1);
-		    res_string += "1";
-		}
-		0  => {
-		    node = node.get_side_node(1);
-		    res_string += "0";
-		}
-	    }
+	    },
 	}
     }
-    println!("{}", res_string);
     i32::from_str_radix(&res_string, 2).
 	expect(&(format!("couldn't convert {} to decimal", &res_string)))
 }
