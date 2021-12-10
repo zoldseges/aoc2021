@@ -2,7 +2,7 @@ mod day1 {
     use aoc2021::puzzles::day01::*;
 
     fn get_input() -> &'static str{
-	include_str!("day1.txt")
+	include_str!("day01.txt")
     }
 
     #[test]
@@ -20,7 +20,7 @@ mod day2 {
     use aoc2021::puzzles::day02::*;
 
     fn get_input() -> &'static str{
-	include_str!("day2.txt")
+	include_str!("day02.txt")
     }
 
     #[test]
@@ -38,7 +38,7 @@ mod day3 {
     use aoc2021::puzzles::day03::*;
 
     fn get_input() -> &'static str{
-	include_str!("day3.txt")
+	include_str!("day03.txt")
     }
 
     #[test]
@@ -92,7 +92,7 @@ mod day4 {
     use aoc2021::puzzles::day04::*;
 
     fn get_input() -> &'static str{
-	include_str!("day4.txt")
+	include_str!("day04.txt")
     }
 
     #[test]
@@ -145,7 +145,7 @@ mod day5 {
     use aoc2021::puzzles::day05::*;
 
     fn get_input() -> &'static str{
-	include_str!("day5.txt")
+	include_str!("day05.txt")
     }
 
     #[test]
@@ -163,5 +163,59 @@ mod day5 {
     #[test]
     fn test_part2() {
 	assert_eq!(12, get_solution(false, get_input()));
+    }
+}
+
+mod day6 {
+    use aoc2021::puzzles::day06::*;
+
+    fn get_input() -> &'static str{
+	include_str!("day06.txt")
+    }
+
+    #[test]
+    fn test_parser() {
+	assert_eq!(vec!(3,4,3,1,2), parse_input(get_input()));
+    }
+
+    #[test]
+    fn test_no_fishes_after_n_days() {
+	let mut fishes = parse_input(get_input());
+	assert_eq!(26, no_fishes_after_n_days(&mut fishes, 18));
+	assert_eq!(5934, no_fishes_after_n_days(&mut fishes, 80));
+    }
+
+    #[test]
+    fn test_no_fishes_after_many_days() {
+	let mut fishes = parse_input(get_input());
+	assert_eq!(26984457539, no_fishes_after_n_days(&mut fishes, 256));
+    }
+}
+
+mod day7 {
+    use aoc2021::puzzles::day07::*;
+
+    fn get_input() -> &'static str{
+	include_str!("day07.txt")
+    }
+
+    #[test]
+    fn test_parser() {
+	assert_eq!(vec!(16,1,2,0,4,2,7,1,2,14), parse_input(get_input()));
+    }
+
+    #[test]
+    fn test_calc_min_lin_pos() {
+	assert_eq!((37, 2), calc_min_pos(true, parse_input(get_input())));
+    }
+
+    #[test]
+    fn test_step_func() {
+	assert_eq!(66, steping_function((5 as i32 - 16 as i32).abs() as u32));
+    }
+
+    #[test]
+    fn test_calc_min_step_pos() {
+	assert_eq!((168, 5), calc_min_pos(false, parse_input(get_input())));
     }
 }
