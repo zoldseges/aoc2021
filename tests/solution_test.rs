@@ -1,7 +1,7 @@
 mod day1 {
     use aoc2021::puzzles::day01::*;
 
-    fn get_input() -> &'static str{
+    fn get_input() -> &'static str {
 	include_str!("day01.txt")
     }
 
@@ -19,7 +19,7 @@ mod day1 {
 mod day2 {
     use aoc2021::puzzles::day02::*;
 
-    fn get_input() -> &'static str{
+    fn get_input() -> &'static str {
 	include_str!("day02.txt")
     }
 
@@ -37,7 +37,7 @@ mod day2 {
 mod day3 {
     use aoc2021::puzzles::day03::*;
 
-    fn get_input() -> &'static str{
+    fn get_input() -> &'static str {
 	include_str!("day03.txt")
     }
 
@@ -91,7 +91,7 @@ mod day3 {
 mod day4 {
     use aoc2021::puzzles::day04::*;
 
-    fn get_input() -> &'static str{
+    fn get_input() -> &'static str {
 	include_str!("day04.txt")
     }
 
@@ -144,7 +144,7 @@ mod day4 {
 mod day5 {
     use aoc2021::puzzles::day05::*;
 
-    fn get_input() -> &'static str{
+    fn get_input() -> &'static str {
 	include_str!("day05.txt")
     }
 
@@ -169,7 +169,7 @@ mod day5 {
 mod day6 {
     use aoc2021::puzzles::day06::*;
 
-    fn get_input() -> &'static str{
+    fn get_input() -> &'static str {
 	include_str!("day06.txt")
     }
 
@@ -195,7 +195,7 @@ mod day6 {
 mod day7 {
     use aoc2021::puzzles::day07::*;
 
-    fn get_input() -> &'static str{
+    fn get_input() -> &'static str {
 	include_str!("day07.txt")
     }
 
@@ -217,5 +217,66 @@ mod day7 {
     #[test]
     fn test_calc_min_step_pos() {
 	assert_eq!((168, 5), calc_min_pos(false, parse_input(get_input())));
+    }
+}
+
+
+mod day8 {
+    use aoc2021::puzzles::day08::*;
+
+    fn get_input_1() -> &'static str {
+	include_str!("day08.txt")
+    }
+
+    fn get_input_2() -> &'static str {
+	"acedgfb cdfbe gcdfa fbcad dab cefabd \
+	 cdfgeb eafb cagedb ab | \
+	 cdfeb fcadb cdfeb cdbaf"
+    }
+
+    #[test]
+    fn test_parser() {
+	assert_eq!("ca", parse_input(get_input_1())[5].out[2]);
+    }
+
+    #[test]
+    fn test_p1() {
+	assert_eq!(26, get_p1(
+	    parse_input(get_input_1())));
+    }
+
+    #[test]
+    fn test_valid_occurences() {
+	let inputvec = parse_input(get_input_2());
+	println!("{:?}", inputvec[0]);
+	assert_eq!(8, count_occurence(&inputvec[0], 'a'));
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_invalid_occurences() {
+	let inputvec = parse_input(get_input_2());
+	count_occurence(&inputvec[0], 'h');
+	let l = Line { clue: vec!["asd"],
+		       out: vec![""], };
+	count_occurence(&l, 'a');
+    }
+
+    #[test]
+    fn test_arr_to_dec() {
+	assert_eq!(9824, arr_to_dec([9,8,2,4]));
+    }
+
+    #[test]
+    fn test_translate_line() {
+	let inputvec = parse_input(get_input_2());
+	assert_eq!(5353, translate_line(&inputvec[0]));
+    }
+
+    #[test]
+    fn test_temp_debug_printer(){
+	let inputvec = parse_input(get_input_2());
+	temp_debug_printer(&inputvec[0]);
+	panic!();
     }
 }
