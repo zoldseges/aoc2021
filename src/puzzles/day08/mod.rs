@@ -1,21 +1,53 @@
-//! # Day 8
-//! ## Concepts
-//! Numbers are represented as
-//! by their segments as the following
-//! table shows
+//! # Seven segment digits
 //!
-//! |         | ABCDEFG |   |
-//! |---------|---------|---|
-//! | ABCEFG  | 1110111 | 0 |
-//! | C F     | 0010010 | 1 |
-//! | ACDE G  | 1011011 | 2 |
-//! | ACDFG   | 1011011 | 3 |
-//! | BCDF    | 0111010 | 4 |
-//! | ABDFG   | 1101011 | 5 |
-//! | ABDEFG  | 1101111 | 6 |
-//! | ACF     | 1010010 | 7 |
-//! | ABCDEFG | 1111111 | 8 |
-//! | ABCDFG  | 1111011 | 9 |
+//! ## Digit representation
+//! ```ignore
+//!   0:      1:      2:      3:      4:  
+//!  AAAA    ....    AAAA    AAAA    .... 
+//! B    C  .    C  .    C  .    C  B    C
+//! B    C  .    C  .    C  .    C  B    C
+//!  ....    ....    DDDD    DDDD    DDDD 
+//! E    F  .    F  E    .  .    F  .    F
+//! E    F  .    F  E    .  .    F  .    F
+//!  GGGG    ....    GGGG    GGGG    .... 
+//!                                       
+//!   5:      6:      7:      8:      9:  
+//!  AAAA    AAAA    AAAA    AAAA    AAAA 
+//! B    .  B    .  .    C  B    C  B    C
+//! B    .  B    .  .    C  B    C  B    C
+//!  DDDD    DDDD    ....    DDDD    DDDD 
+//! .    F  E    F  .    F  E    F  .    F
+//! .    F  E    F  .    F  E    F  .    F
+//!  GGGG    GGGG    ....    GGGG    GGGG 
+//! ```
+//! As the letters represent segments,
+//! we count their occurences and also
+//! read the length of the word it was
+//! seen in. From this two information
+//! of all words we can deduce what
+//! segment a letter represents.
+//!
+//! Numbers can be represented in binary
+//! by the segments they include
+//! ```ignore
+//! |     | A | B | C | D | E | F | G | wlen |
+//! |-----+---+---+---+---+---+---+---+------|
+//! |   0 | x | x | x |   | x | x | x |    6 |
+//! |   1 |   |   | x |   |   | x |   |    2 |
+//! |   2 | x |   | x | x | x |   | x |    5 |
+//! |   3 | x |   | x | x |   | x | x |    5 |
+//! |   4 |   | x | x | x |   | x |   |    4 |
+//! |   5 | x | x |   | x |   | x | x |    5 |
+//! |   6 | x | x |   | x | x | x | x |    6 |
+//! |   7 | x |   | x |   |   | x |   |    3 |
+//! |   8 | x | x | x | x | x | x | x |    7 |
+//! |   9 | x | x | x | x |   | x | x |    6 |
+//! |-----+---+---+---+---+---+---+---+------|
+//! | occ | 8 | 6 | 8 | 7 | 4 | 9 | 7 |      |
+//! ```
+//! x marks if the bit on this place is on or off, 
+//! so 0 would be 0b01110111,
+//! 1 would be 0b00010010 and so on...
 
 pub fn name() -> Option<String> {
     Some(String::from("Seven Segment Search"))
@@ -31,195 +63,118 @@ pub fn solve_p2() -> Option<String> {
     None
 }
 
-/// clue the left side of the input\
-/// out the right side (from which the solution comes) of the input
-#[derive (Debug)]
 pub struct Line<'a> {
-    pub clue : Vec<&'a str>,
-    pub out  : Vec<&'a str>,
+    clues: [&'a str; 10],
+    out: [&'a str; 4],
 }
 
-pub fn parse_input(input: &str) -> Vec<Line> {
+impl<'a> Line<'a> {
+    pub fn get_clues(&self) -> &[&'a str;10] {
+	&self.clues
+    }
+
+    pub fn get_out(&self) -> &[&'a str;4] {
+	&self.out
+    }
+
+}
+
+pub fn read_input(input: &str) -> Vec<Line> {
     let mut res = Vec::new();
     for line in input.lines() {
-	let mut p_line = Line { clue: Vec::new(),
-				out: Vec::new(),};
-	let mut line_split = line.split('|');
-	p_line.clue = line_split.next().unwrap().
-	    split_whitespace().
-	    map( | x | { x.trim() } ).
-	    collect();
-	p_line.out = line_split.next().unwrap().
-	    split_whitespace().
-	    map( | x | { x.trim() } ).
-	    collect();
-	res.push(p_line);
+	res.push(read_line(line));
     }
     res
 }
 
-pub fn get_p1(input: Vec<Line> ) -> u32 {
-    let mut result = 0;
-    for v in input {
-	for s in v.out {
-	    let len = s.len();
-	    if len == 2 || len == 3 ||
-		len == 4 || len == 7 {
-		    result += 1;
-		}
+pub fn read_line(input: &str) -> Line {
+    let mut split = input.split('|');
+    let clues = split.next().unwrap();
+    let out = split.next().unwrap();
+    Line {
+	clues: clues.split_whitespace().
+	    collect::<Vec<&str>>().try_into().unwrap(),
+	out: out.split_whitespace().
+	    collect::<Vec<&str>>().try_into().unwrap(),
+    }
+}
+
+/// # Make translational array
+///
+/// Creates an array like this:
+/// 
+/// |  a  |  b  |  c        | ... |  g  |
+/// |-----|-----|-----------|-----|-----|
+/// | ... | ... | 0b0000001 | ... | ... |
+///
+/// Which means that the letter c in words shoud
+/// turn the last segment on (originally labelled as G)
+fn mk_trans_array(line: &Line) -> [u8;7] {
+    let seg_keys = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+    let mut trans_arr: [u8; 7] = [0; 7];
+    // theese words have unique lengths, we need them
+    // to determine segments A,C,D,G as their occurence
+    // matches
+    // if a key occurs 8 times and is in the word for 4,
+    // then the key represents segment A, else C
+    // similarly if a key occurs 7 times and in the word
+    // for 4, it's D else, it's G
+    let mut word_num4: &str = "";
+    for word in line.get_clues() {
+	if word.len() == 4 {
+	    word_num4 = word;
 	}
     }
-    result
-}
-
-/// # Extracts the "translation array" from Line.clues
-/// The resulting array looks like this:\
-/// [a, b, c, d, e, f, g]\
-/// where each of them are a binary number
-/// representing the possible segments a letter
-/// represents. For more information about the
-/// representation check the crate
-/// documentation [here](crate::puzzles::day08)
-fn mk_trans_arr(line: &Line) -> [Segment; 7] {
-    let chars = ['a', 'b', 'c', 'd',
-		 'e', 'f', 'g'];
-    let mut seg_arr: [Segment; 7] = [Segment::new(),
-				     Segment::new(),
-				     Segment::new(),
-				     Segment::new(),
-				     Segment::new(),
-				     Segment::new(),
-				     Segment::new(),
-    ];
-    for (i,c) in chars.iter().enumerate() {
-	let count = count_occurence(line, *c);
-	let poss_segs = poss_seg_from_occurence(count);
-	seg_arr[i].c = *c;
-	seg_arr[i].poss_segs = poss_segs;
-    }
-    seg_arr
-}
-
-/// poss_segs is the possible segments [Segment.c]
-/// represents in binary.
-struct Segment {
-    c: char,
-    pub poss_segs: u8,
-}
-
-impl Segment {
-    fn new() -> Segment {
-	Segment { c: '0', poss_segs: 0, }
-    }
-}
-
-pub fn count_occurence(input: &Line, c: char) -> u8 {
-    let mut counter = 0;
-    let valid_counts = [4,6,7,8,9];
-    for s in &input.clue {
-	if s.chars().any(|x| { x == c}) {
-	    counter += 1;
+    let word_num4 = word_num4;
+    for (i, seg_key) in seg_keys.iter().enumerate() {
+	let mut occ: u8 = 0;
+	for word in line.get_clues() {
+	    if word.chars().any(|x| { x == *seg_key }) {
+		occ += 1;
+	    }
 	}
+	trans_arr[i] = det_seg(occ, *seg_key, word_num4);
     }
-    if valid_counts.iter().any(|&x| { x == counter }) {
-	counter
-    } else {
-	panic!("invlaid number of occurence of `{}` \
-		in {:?}", c, input);
-    }
+    trans_arr
 }
 
-fn poss_seg_from_occurence(occ: u8) -> u8 {
+fn det_seg(occ: u8,
+	   seg_key: char,
+	   word_num4: &str)
+	   -> u8 {
+    let in_word_num_4 = word_num4.chars().
+	any(|x| { x == seg_key });
     match occ {
-	//   0b0ABC_DEFG
-	4 => 0b0000_0100,
-	6 => 0b0010_0000,
-	7 => 0b0000_1001,
-	8 => 0b0101_0000,
-	9 => 0b0000_0010,
-	_ => panic!("Impossibru!"),
+	//               ABC DEFG
+	4 =>         0b0000_0100,
+	6 =>         0b0010_0000,
+	9 =>         0b0000_0010,
+	8 => match in_word_num_4 {
+	    true  => 0b0001_0000,
+	    false => 0b0100_0000,
+	}
+	7 => match in_word_num_4 {	
+	    true  => 0b0000_1000,
+	    false => 0b0000_0001,
+	}
+	_ => panic!(),
     }
 }
 
-const NUMS: [u8; 10] = [0b0111_0111,
-			0b0001_0010,
-			0b0101_1101,
-			0b0101_1011,
-			0b0011_1010,
-			0b0110_1011,
-			0b0110_1111,
-			0b0101_0010,
-			0b0111_1111,
-			0b0111_1011,];
-
-pub fn translate_line(line: &Line) -> u32 {
-    let mut res_arr = [0_u8; 4];
-    let trans_arr = mk_trans_arr(&line);
-    for (i, word) in line.out.iter().enumerate() {
-	for c in word.chars() {
-	    let poss_segs = letter_to_seg_i(c);
-	    let poss_segs = trans_arr[poss_segs].
-		poss_segs;
-	    // this has to be unmasked later
-	    res_arr[i] |= poss_segs;
-	}
-	for (j, num) in NUMS.iter().enumerate() {
-	    // let cand = res_arr[i] & num;
-	    // if cand == *num {
-	    // 	res_arr[i] = j as u8;
-	    // }
-
-	    // if NUMS.iter().any(|x| { cand == *x } ) {
-	    // 	println!("{}", cand);
-	    // 	res_arr[i] = j as u8;
-	    // }
-	}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    fn get_oneline_input() -> &'static str {
+	"acedgfb cdfbe gcdfa fbcad dab cefabd \
+	 cdfgeb eafb cagedb ab | \
+	 cdfeb fcadb cdfeb cdbaf"
     }
-    arr_to_dec(res_arr)
-}
 
-pub fn temp_debug_printer(line: &Line) {
-    let mut res_arr = [0_u8; 10];
-    let trans_arr = mk_trans_arr(&line);
-    let sols = [8,5,2,3,7,9,6,4,0,1];
-    for (i, word) in line.clue.iter().enumerate() {
-	for c in word.chars() {
-	    let poss_segs = letter_to_seg_i(c);
-	    let poss_segs = trans_arr[poss_segs].
-		poss_segs;
-	    // this has to be unmasked later
-	    res_arr[i] |= poss_segs;
-	}
-	println!("{:>8} -> {:08b}", word, res_arr[i]);
-	println!("{:>8} -> {:08b}", sols[i], NUMS[sols[i]]);
-	println!();
-	for (j, num) in NUMS.iter().enumerate() {
-	    let rem = num ^ res_arr[i];
-	    println!("{:>8} ^= {:08b}", j, rem);
-	}
-	println!("{:->20}", "");
-    }
-}
-
-pub fn arr_to_dec(arr: [u8;4]) -> u32 {
-    let mut res: u32 = 0;
-    for n in arr {
-	res *= 10;
-	res += n as u32;
-    }
-    res
-}
-
-/// converts number to the index in the pos_seg_arr
-fn letter_to_seg_i(c: char) -> usize {
-    match c {
-	'a' => 0,
-	'b' => 1,
-	'c' => 2,
-	'd' => 3,
-	'e' => 4,
-	'f' => 5,
-	'g' => 6,
-	_   => panic!(),
+    #[test]
+    fn test_mk_trans_arr() {
+	let vec = read_input(get_oneline_input());
+	let trans_arr = mk_trans_array(&vec[0]);
+	panic!();
     }
 }

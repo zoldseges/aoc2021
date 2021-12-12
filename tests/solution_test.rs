@@ -220,63 +220,23 @@ mod day7 {
     }
 }
 
-
 mod day8 {
     use aoc2021::puzzles::day08::*;
 
-    fn get_input_1() -> &'static str {
+    fn get_input() -> &'static str {
 	include_str!("day08.txt")
     }
 
-    fn get_input_2() -> &'static str {
+    fn get_oneline_input() -> &'static str {
 	"acedgfb cdfbe gcdfa fbcad dab cefabd \
 	 cdfgeb eafb cagedb ab | \
 	 cdfeb fcadb cdfeb cdbaf"
     }
 
     #[test]
-    fn test_parser() {
-	assert_eq!("ca", parse_input(get_input_1())[5].out[2]);
-    }
-
-    #[test]
-    fn test_p1() {
-	assert_eq!(26, get_p1(
-	    parse_input(get_input_1())));
-    }
-
-    #[test]
-    fn test_valid_occurences() {
-	let inputvec = parse_input(get_input_2());
-	println!("{:?}", inputvec[0]);
-	assert_eq!(8, count_occurence(&inputvec[0], 'a'));
-    }
-
-    #[test]
-    #[should_panic]
-    fn test_invalid_occurences() {
-	let inputvec = parse_input(get_input_2());
-	count_occurence(&inputvec[0], 'h');
-	let l = Line { clue: vec!["asd"],
-		       out: vec![""], };
-	count_occurence(&l, 'a');
-    }
-
-    #[test]
-    fn test_arr_to_dec() {
-	assert_eq!(9824, arr_to_dec([9,8,2,4]));
-    }
-
-    #[test]
-    fn test_translate_line() {
-	let inputvec = parse_input(get_input_2());
-	assert_eq!(5353, translate_line(&inputvec[0]));
-    }
-
-    #[test]
-    fn test_temp_debug_printer(){
-	let inputvec = parse_input(get_input_2());
-	temp_debug_printer(&inputvec[0]);
-	panic!();
+    fn test_read_input() {
+	let vec = read_input(get_input());
+	assert_eq!("cdgabef", vec[2].get_clues()[9]);
+	assert_eq!("gbcadfe", vec[6].get_out()[3]); 
     }
 }
