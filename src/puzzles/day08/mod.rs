@@ -54,14 +54,30 @@ pub fn name() -> Option<String> {
 }
 
 pub fn solve_p1() -> Option<String> {
-    None
+    let input = include_str!("input.txt");
+    Some(String::from(format!(
+	"{}", get_solution_p1(input))))
 }
 
 pub fn solve_p2() -> Option<String> {
     let input = include_str!("input.txt");
     Some(String::from(format!(
-	"{}", get_solution_p2(
-	    parse_input(input)))))
+	"{}", get_solution_p2(input))))
+}
+
+fn get_solution_p1(input: &str) -> u32 {
+    let vec_of_lines = parse_input(input);
+    let mut acc = 0;
+    for line in vec_of_lines {
+	for word in line.get_out() {
+	    let len = word.len();
+	    if len == 2 || len == 3 ||
+		len == 4 || len == 7 {
+		    acc += 1;
+		}
+	}
+    }
+    acc
 }
 
 struct Line<'a> {
@@ -216,9 +232,10 @@ fn trans_line(line: &Line) -> u32 {
     vec_to_dec(res_vec)
 }
 
-fn get_solution_p2(lines: Vec<Line>) -> u32 {
+fn get_solution_p2(input: &str) -> u32 {
+    let vec_of_lines = parse_input(input);
     let mut acc = 0;
-    for line in lines {
+    for line in vec_of_lines {
 	acc += trans_line(&line);
     }
     acc
@@ -236,6 +253,11 @@ mod tests {
 	"acedgfb cdfbe gcdfa fbcad dab cefabd \
 	 cdfgeb eafb cagedb ab | \
 	 cdfeb fcadb cdfeb cdbaf"
+    }
+
+    #[test]
+    fn test_part_1() {
+	assert_eq!(26, get_solution_p1(get_input()));
     }
 
     #[test]
@@ -266,7 +288,6 @@ mod tests {
     }
 
     fn test_part_2() {
-	let vec = parse_input(get_input());
-	assert_eq!(61229, get_solution_p2(vec));
+	assert_eq!(61229, get_solution_p2(get_input()));
     }
 }
