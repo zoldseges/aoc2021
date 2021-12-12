@@ -18,7 +18,7 @@ pub fn solve_p2() -> Option<String> {
 	"{}", pos.0)))
 }
 
-pub fn parse_input(input: &str) -> Vec<u32> {
+fn parse_input(input: &str) -> Vec<u32> {
     let res = input.split(',').
 	map(|x| { x.trim() }).
 	map(|x| { x.parse::<u32>().unwrap()}).
@@ -26,7 +26,7 @@ pub fn parse_input(input: &str) -> Vec<u32> {
     res
 }
 
-pub fn _steping_function(input: u32) -> u32 {
+fn _steping_function(input: u32) -> u32 {
     if input == 0 {
 	return 0;
     } else {
@@ -34,11 +34,11 @@ pub fn _steping_function(input: u32) -> u32 {
     }
 }
 
-pub fn steping_function(input: u32) -> u32 {
+fn steping_function(input: u32) -> u32 {
     (input + 1) * input / 2
 }
 
-pub fn calc_min_pos(linear: bool, positions: Vec<u32>) -> (u32, u32) {
+fn calc_min_pos(linear: bool, positions: Vec<u32>) -> (u32, u32) {
     let mut min = (u32::MAX, 0);
     let mut tmp: (u32, u32);
     for i in 0..=*positions.iter().max().unwrap() {
@@ -55,4 +55,33 @@ pub fn calc_min_pos(linear: bool, positions: Vec<u32>) -> (u32, u32) {
 	}
     }
     min
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn get_input() -> &'static str {
+	include_str!("input_test.txt")
+    }
+
+    #[test]
+    fn test_parser() {
+	assert_eq!(vec!(16,1,2,0,4,2,7,1,2,14), parse_input(get_input()));
+    }
+
+    #[test]
+    fn test_calc_min_lin_pos() {
+	assert_eq!((37, 2), calc_min_pos(true, parse_input(get_input())));
+    }
+
+    #[test]
+    fn test_step_func() {
+	assert_eq!(66, steping_function((5 as i32 - 16 as i32).abs() as u32));
+    }
+
+    #[test]
+    fn test_calc_min_step_pos() {
+	assert_eq!((168, 5), calc_min_pos(false, parse_input(get_input())));
+    }
 }

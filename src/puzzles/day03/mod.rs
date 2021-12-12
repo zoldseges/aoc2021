@@ -14,7 +14,7 @@ pub fn solve_p2() -> Option<String> {
     Some((oxy * co).to_string())
 }
 
-pub fn get_solution_p1(input: &str) -> String {
+fn get_solution_p1(input: &str) -> String {
     let mut counts = Vec::new();
     let mut line_count = 0;
     let mut gamma_vec = Vec::new();
@@ -50,7 +50,7 @@ pub fn get_solution_p1(input: &str) -> String {
     format!("{}", gamma * epsilon)
 }
 
-pub fn get_part_p2(input: &str, oxy: bool) -> i32 {
+fn get_part_p2(input: &str, oxy: bool) -> i32 {
     let mut node = &mut Node::new();
     let mut res_string = String::new();
     for line in input.lines() {
@@ -105,21 +105,21 @@ pub fn get_part_p2(input: &str, oxy: bool) -> i32 {
 	expect(&(format!("couldn't convert {} to decimal", &res_string)))
 }
 
-pub struct Node {
+struct Node {
     count: i32,
     left_0: Box<Option<Node>>,
     right_1: Box<Option<Node>>,
 }
 
 impl Node {
-    pub fn new()-> Node {
+    fn new()-> Node {
 	Node { count: 0,
 	       left_0: Box::new(None),
 	       right_1: Box::new(None)
 	}
     }
 
-    pub fn add_node(&mut self, side: i8) {
+    fn add_node(&mut self, side: i8) {
 	let new = Node::new();
 	match side {
 	    0 => self.left_0 = Box::new(Some(new)),
@@ -128,7 +128,7 @@ impl Node {
 	}
     }
 
-    pub fn get_side_node(&mut self, side: i8) -> &mut Node {
+    fn get_side_node(&mut self, side: i8) -> &mut Node {
 	match side {
 	    0 => match self.left_0.as_ref().as_ref() {
 		Some(_) => self.left_0.as_mut().as_mut().unwrap(),
@@ -148,7 +148,7 @@ impl Node {
 	}
     }
 
-    pub fn add_str_to_tree(&mut self, s: &str) {
+    fn add_str_to_tree(&mut self, s: &str) {
 	let mut side: i8;
 	let mut curr_node = self;
 	curr_node.inc_count();
@@ -159,16 +159,16 @@ impl Node {
 	}
     }
 
-    pub fn inc_count(&mut self) {
+    fn inc_count(&mut self) {
 	self.count += 1
     }
 
-    pub fn get_count(&self) -> i32 {
+    fn get_count(&self) -> i32 {
 	self.count
     }
 }
 
-pub fn bin_vec_to_dec(mut bin: Vec<i32>) -> i32 {
+fn bin_vec_to_dec(mut bin: Vec<i32>) -> i32 {
     let mut ret_val = 0;
     bin.reverse();
     for (i, value) in bin.iter().enumerate() {
@@ -177,4 +177,59 @@ pub fn bin_vec_to_dec(mut bin: Vec<i32>) -> i32 {
 	}
     }
     ret_val
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn get_input() -> &'static str {
+	include_str!("input_test.txt")
+    }
+
+    #[test]
+    fn test_bin_to_vec() {
+	assert_eq!(58, bin_vec_to_dec(vec!(0,0,0,1,1,1,0,1,0)));
+    }
+
+    #[test]
+    fn test_part1() {
+	assert_eq!("198", get_solution_p1(get_input()));
+    }
+
+    #[test]
+    fn test_node_add() {
+	let mut root = Node::new();
+	root.add_node(0);
+	root.get_side_node(0).inc_count();
+	assert_eq!(root.get_side_node(0).get_count(), 1);
+    }
+
+    #[test]
+    fn test_add_str_to_tree() {
+	let mut res_vec = vec!();
+	let mut node = &mut Node::new();
+	node.add_str_to_tree("1001");
+	node.add_str_to_tree("1011");
+	res_vec.push(node.get_count());
+	node = node.get_side_node(1);
+	res_vec.push(node.get_count());
+	node = node.get_side_node(0);
+	res_vec.push(node.get_count());
+	node = node.get_side_node(0);
+	res_vec.push(node.get_count());
+	node = node.get_side_node(1);
+	res_vec.push(node.get_count());
+	assert_eq!(vec!(2,2,2,1,1), res_vec);
+    }
+
+    #[test]
+    fn test_part_oxy() {
+	assert_eq!(23, get_part_p2(get_input(), true));
+    }
+
+    #[test]
+    fn test_part_co() {
+	assert_eq!(10, get_part_p2(get_input(), false));
+    }
 }

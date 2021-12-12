@@ -54,9 +54,7 @@ pub fn name() -> Option<String> {
 }
 
 pub fn solve_p1() -> Option<String> {
-    let input = include_str!("input.txt");
-    Some(String::from(format!(
-	"{}", get_p1(parse_input(input)))))
+    None
 }
 
 pub fn solve_p2() -> Option<String> {

@@ -16,7 +16,7 @@ pub fn solve_p2() -> Option<String> {
     Some(String::from(format!("{}", sum * draw)))
 }
 
-pub fn read_input(input: &str) ->
+fn read_input(input: &str) ->
     (Vec<i32>, Vec<[[i32; 5]; 5]>, HashMap<i32, Vec<(usize, usize, usize)>>)
 {
     let mut hashmap = HashMap::new();
@@ -62,7 +62,7 @@ fn check_win(board: [[i32; 5]; 5],
     row || col
 }
 
-pub fn run(first_winning: bool,
+fn run(first_winning: bool,
 	   (draws, mut boards, hashmap):
 	   (Vec<i32>,
 	    Vec<[[i32; 5]; 5]>,
@@ -116,3 +116,58 @@ fn sum_board(board: [[i32; 5]; 5]) -> i32 {
     }
     sum
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn get_input() -> &'static str {
+	include_str!("input_test.txt")
+    }
+
+    #[test]
+    fn test_get_draws() {
+	let (draws, _, _) = read_input(get_input());
+	assert_eq!(vec!(7,4,9,5,11,17,23,2,0,14,21,
+		       24,10,16,13,6,15,25,12,22,
+		       18,20,8,19,3,26,1), draws);
+    }
+
+    #[test]
+    fn test_hashmap() {
+	let (_, _, hashmap) = read_input(get_input());
+	assert_eq!(3, hashmap.get(&24).unwrap().len());
+	assert!(hashmap.get(&24).unwrap().contains(&(0, 1, 4)));
+	assert!(hashmap.get(&24).unwrap().contains(&(1, 3, 3)));
+	assert!(hashmap.get(&24).unwrap().contains(&(2, 0, 3)));
+	assert!(hashmap.get(&72).is_none());
+	assert!(!hashmap.get(&24).unwrap().contains(&(2,2,2)));
+	assert!(!hashmap.get(&24).unwrap().contains(&(2,2,8)));
+	assert!(!hashmap.get(&24).unwrap().contains(&(5,2,1)));
+    }
+
+    #[test]
+    fn test_first_winning_last_draw() {
+	let (_, l_draw) = run(true, read_input(get_input()));
+	assert_eq!(24, l_draw);
+    }
+    
+    #[test]
+    fn test_first_winning_sum() {
+	let (sum, _) = run(true, read_input(get_input()));
+	assert_eq!(188, sum);
+    }
+
+    #[test]
+    fn test_last_winning_last_draw() {
+	let (_, l_draw) = run(false, read_input(get_input()));
+	assert_eq!(13, l_draw);
+    }
+    
+    #[test]
+    fn test_last_winning_sum() {
+	let (sum, _) = run(false, read_input(get_input()));
+	assert_eq!(148, sum);
+    }
+}
+

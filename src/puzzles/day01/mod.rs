@@ -12,7 +12,7 @@ pub fn solve_p2() -> Option<String> {
     Some(get_solution_p2(str))
 }
 
-pub fn get_solution_p1(input: &str) -> String {
+fn get_solution_p1(input: &str) -> String {
     let mut counter = 0;
     let mut tmp;
     let mut lines = input.lines();
@@ -31,7 +31,7 @@ pub fn get_solution_p1(input: &str) -> String {
     counter.to_string()
 }
 
-pub fn get_solution_p2(input: &str) -> String {
+fn get_solution_p2(input: &str) -> String {
     let mut counter = 0;
     let mut lines = input.lines();
     let mut arr: [i32; 4] = [0; 4];
@@ -57,4 +57,23 @@ pub fn get_solution_p2(input: &str) -> String {
 	arr[2] = arr[3];
     }
     counter.to_string()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn get_input() -> &'static str {
+	include_str!("input_test.txt")
+    }
+
+    #[test]
+    fn test_part1() {
+	assert_eq!("7", get_solution_p1(get_input()));
+    }
+
+    #[test]
+    fn test_part2() {
+	assert_eq!("5", get_solution_p2(get_input()));
+    }
 }

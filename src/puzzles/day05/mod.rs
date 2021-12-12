@@ -18,7 +18,7 @@ pub fn solve_p2() -> Option<String> {
 }
 
 #[derive (Debug, PartialEq, Clone, Copy)]
-pub struct Point {
+struct Point {
     x: i32,
     y: i32,
 }
@@ -46,7 +46,7 @@ impl Sub for Point {
 }
 
 #[derive (Debug, PartialEq, Clone, Copy)]
-pub struct Line {
+struct Line {
     p0: Point,
     p1: Point,
     dir: Point,
@@ -54,7 +54,7 @@ pub struct Line {
 }
 
 impl Line {
-    pub fn new(x0: i32, y0: i32, x1: i32, y1: i32) -> Line {
+    fn new(x0: i32, y0: i32, x1: i32, y1: i32) -> Line {
 	let (mut x_dir, mut y_dir) = (x1-x0, y1-y0);
 	if x_dir != 0 {
 	    x_dir = x_dir / x_dir.abs();
@@ -84,7 +84,7 @@ impl Iterator for Line {
     }
 }
 
-pub fn str_to_line(s: &str) -> Line {
+fn str_to_line(s: &str) -> Line {
     let sp: Vec<&str> = s.split(&[',', '-', '>']).collect();
     Line::new(sp[0].trim().parse().unwrap(),
 	      sp[1].trim().parse().unwrap(),
@@ -93,11 +93,11 @@ pub fn str_to_line(s: &str) -> Line {
     )
 }
 
-pub fn is_right_line(l: &Line) -> bool {
+fn is_right_line(l: &Line) -> bool {
     l.p0.y == l.p1.y || l.p0.x == l.p1.x
 }
 
-pub fn draw_line(line: &Line, map: &mut HashSet<(i32, i32)>, danger_map: &mut HashSet<(i32, i32)>) {
+fn draw_line(line: &Line, map: &mut HashSet<(i32, i32)>, danger_map: &mut HashSet<(i32, i32)>) {
     for p in line.into_iter() {
 	match map.get(&(p.x, p.y)) {
 	    Some(_) => {
@@ -108,7 +108,7 @@ pub fn draw_line(line: &Line, map: &mut HashSet<(i32, i32)>, danger_map: &mut Ha
     }
 }
 
-pub fn get_solution(only_right: bool, input: &str) -> usize {
+fn get_solution(only_right: bool, input: &str) -> usize {
     let mut map = HashSet::new();
     let mut danger_map = HashSet::new();
     for line in input.lines() {
@@ -123,3 +123,30 @@ pub fn get_solution(only_right: bool, input: &str) -> usize {
     }
     danger_map.len()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn get_input() -> &'static str {
+	include_str!("input_test.txt")
+    }
+
+    #[test]
+    fn test_str_to_line() {
+	let s = "15,2 -> 8,9";
+	let l = Line::new(15, 2, 8, 9);
+	assert_eq!(l, str_to_line(s));
+    }
+
+    #[test]
+    fn test_part1() {
+	assert_eq!(5, get_solution(true, get_input()));
+    }
+    
+    #[test]
+    fn test_part2() {
+	assert_eq!(12, get_solution(false, get_input()));
+    }
+}
+

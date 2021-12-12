@@ -12,7 +12,7 @@ pub fn solve_p2() -> Option<String> {
     Some(get_solution_p2(input))
 }
 
-pub fn get_solution_p1(input: &str) -> String {
+fn get_solution_p1(input: &str) -> String {
     let mut pos = [0, 0];
     for line in input.lines() {
 	let v: Vec<&str> = line.split(' ').collect();
@@ -28,7 +28,7 @@ pub fn get_solution_p1(input: &str) -> String {
     String::from(format!("{}", pos[0] * pos[1]))
 }
 
-pub fn get_solution_p2(input: &str) -> String {
+fn get_solution_p2(input: &str) -> String {
     let mut pos = [0, 0, 0];
     for line in input.lines() {
 	let v: Vec<&str> = line.split(' ').collect();
@@ -45,4 +45,23 @@ pub fn get_solution_p2(input: &str) -> String {
 	}
     }
     String::from(format!("{}", pos[0] * pos[1]))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn get_input() -> &'static str {
+	include_str!("input_test.txt")
+    }
+
+    #[test]
+    fn test_part1() {
+	assert_eq!("150", get_solution_p1(get_input()));
+    }
+
+    #[test]
+    fn test_part2() {
+	assert_eq!("900", get_solution_p2(get_input()));
+    }
 }
