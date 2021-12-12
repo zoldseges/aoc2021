@@ -1,7 +1,7 @@
 //! # Seven segment digits
 //!
 //! ## Digit representation
-//! ```ignore
+//! ```text
 //!   0:      1:      2:      3:      4:  
 //!  AAAA    ....    AAAA    AAAA    .... 
 //! B    C  .    C  .    C  .    C  B    C
@@ -22,14 +22,14 @@
 //! ```
 //! As the letters represent segments,
 //! we count their occurences and also
-//! read the length of the word it was
+//! get the length of the word it was
 //! seen in. From this two information
 //! of all words we can deduce what
 //! segment a letter represents.
 //!
 //! Numbers can be represented in binary
 //! by the segments they include
-//! ```ignore
+//! ```text
 //! |     | A | B | C | D | E | F | G | wlen |
 //! |-----+---+---+---+---+---+---+---+------|
 //! |   0 | x | x | x |   | x | x | x |    6 |
@@ -58,34 +58,37 @@ pub fn solve_p1() -> Option<String> {
 }
 
 pub fn solve_p2() -> Option<String> {
-    None
+    let input = include_str!("input.txt");
+    Some(String::from(format!(
+	"{}", get_solution_p2(
+	    parse_input(input)))))
 }
 
-pub struct Line<'a> {
+struct Line<'a> {
     clues: [&'a str; 10],
     out: [&'a str; 4],
 }
 
 impl<'a> Line<'a> {
-    pub fn get_clues(&self) -> &[&'a str;10] {
+    fn get_clues(&self) -> &[&'a str;10] {
 	&self.clues
     }
 
-    pub fn get_out(&self) -> &[&'a str;4] {
+    fn get_out(&self) -> &[&'a str;4] {
 	&self.out
     }
 
 }
 
-pub fn read_input(input: &str) -> Vec<Line> {
+fn parse_input(input: &str) -> Vec<Line> {
     let mut res = Vec::new();
     for line in input.lines() {
-	res.push(read_line(line));
+	res.push(parse_line(line));
     }
     res
 }
 
-pub fn read_line(input: &str) -> Line {
+fn parse_line(input: &str) -> Line {
     let mut split = input.split('|');
     let clues = split.next().unwrap();
     let out = split.next().unwrap();
@@ -159,10 +162,76 @@ fn det_seg(occ: u8,
     }
 }
 
+fn word_to_digit(word: &str, trans_arr: [u8;7]) -> u8 {
+    let mut res = 0;
+    for c in word.chars() {
+	match c {
+	    'a' => res |= trans_arr[0],
+	    'b' => res |= trans_arr[1],
+	    'c' => res |= trans_arr[2],
+	    'd' => res |= trans_arr[3],
+	    'e' => res |= trans_arr[4],
+	    'f' => res |= trans_arr[5],
+	    'g' => res |= trans_arr[6],
+	    _ => panic!(),
+	}
+    }
+    res
+}
+
+fn vec_to_dec(inp: [u8;4]) -> u32 {
+    let mut res = 0;
+    for n in inp {
+	res *= 10;
+	res += n as u32
+    }
+    res
+}
+
+// converts digit represented by its segment
+// to decimal digit
+fn seg_to_dec(seg: u8) -> u8 {
+    match seg {
+	0b0111_0111 => 0,
+	0b0001_0010 => 1,	
+	0b0101_1101 => 2,
+	0b0101_1011 => 3,
+	0b0011_1010 => 4,
+	0b0110_1011 => 5,
+	0b0110_1111 => 6,
+	0b0101_0010 => 7,
+	0b0111_1111 => 8,	
+	0b0111_1011 => 9,
+	_ => panic!(),
+    }
+}
+
+fn trans_line(line: &Line) -> u32 {
+    let trans_array = mk_trans_array(line);
+    let mut res_vec = [0, 0, 0, 0];
+    for (i, word) in line.get_out().iter().enumerate() {
+	res_vec[i] = seg_to_dec(
+	    word_to_digit(word, trans_array));
+    }
+    vec_to_dec(res_vec)
+}
+
+fn get_solution_p2(lines: Vec<Line>) -> u32 {
+    let mut acc = 0;
+    for line in lines {
+	acc += trans_line(&line);
+    }
+    acc
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     
+    fn get_input() -> &'static str {
+	include_str!("input_test.txt")
+    }
+
     fn get_oneline_input() -> &'static str {
 	"acedgfb cdfbe gcdfa fbcad dab cefabd \
 	 cdfgeb eafb cagedb ab | \
@@ -171,8 +240,33 @@ mod tests {
 
     #[test]
     fn test_mk_trans_arr() {
-	let vec = read_input(get_oneline_input());
+	let vec = parse_input(get_oneline_input());
 	let trans_arr = mk_trans_array(&vec[0]);
-	panic!();
+	//             ABC DEFG
+	assert_eq!([0b0001_0000,
+		    0b0000_0010,
+		    0b0000_0001,
+		    0b0100_0000,
+		    0b0010_0000,
+		    0b0000_1000,
+		    0b0000_0100,],
+		   trans_arr);
+
+    }
+
+    #[test]
+    fn test_vec_to_dec() {
+	assert_eq!(9485, vec_to_dec([9, 4, 8, 5]));
+    }
+
+    #[test]
+    fn trans_one_line() {
+	let vec = parse_input(get_oneline_input());
+	assert_eq!(5353, trans_line(&vec[0]));
+    }
+
+    fn test_part_2() {
+	let vec = parse_input(get_input());
+	assert_eq!(61229, get_solution_p2(vec));
     }
 }

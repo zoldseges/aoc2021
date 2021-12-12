@@ -6,17 +6,17 @@ pub fn name() -> Option<String> {
 
 pub fn solve_p1() -> Option<String> {
     let input = include_str!("input.txt");
-    let (sum, draw) = run(true, read_input(input));
+    let (sum, draw) = run(true, parse_input(input));
     Some(String::from(format!("{}", sum * draw)))
 }
 
 pub fn solve_p2() -> Option<String> {
     let input = include_str!("input.txt");
-    let (sum, draw) = run(false, read_input(input));
+    let (sum, draw) = run(false, parse_input(input));
     Some(String::from(format!("{}", sum * draw)))
 }
 
-fn read_input(input: &str) ->
+fn parse_input(input: &str) ->
     (Vec<i32>, Vec<[[i32; 5]; 5]>, HashMap<i32, Vec<(usize, usize, usize)>>)
 {
     let mut hashmap = HashMap::new();
@@ -127,7 +127,7 @@ mod tests {
 
     #[test]
     fn test_get_draws() {
-	let (draws, _, _) = read_input(get_input());
+	let (draws, _, _) = parse_input(get_input());
 	assert_eq!(vec!(7,4,9,5,11,17,23,2,0,14,21,
 		       24,10,16,13,6,15,25,12,22,
 		       18,20,8,19,3,26,1), draws);
@@ -135,7 +135,7 @@ mod tests {
 
     #[test]
     fn test_hashmap() {
-	let (_, _, hashmap) = read_input(get_input());
+	let (_, _, hashmap) = parse_input(get_input());
 	assert_eq!(3, hashmap.get(&24).unwrap().len());
 	assert!(hashmap.get(&24).unwrap().contains(&(0, 1, 4)));
 	assert!(hashmap.get(&24).unwrap().contains(&(1, 3, 3)));
@@ -148,25 +148,25 @@ mod tests {
 
     #[test]
     fn test_first_winning_last_draw() {
-	let (_, l_draw) = run(true, read_input(get_input()));
+	let (_, l_draw) = run(true, parse_input(get_input()));
 	assert_eq!(24, l_draw);
     }
     
     #[test]
     fn test_first_winning_sum() {
-	let (sum, _) = run(true, read_input(get_input()));
+	let (sum, _) = run(true, parse_input(get_input()));
 	assert_eq!(188, sum);
     }
 
     #[test]
     fn test_last_winning_last_draw() {
-	let (_, l_draw) = run(false, read_input(get_input()));
+	let (_, l_draw) = run(false, parse_input(get_input()));
 	assert_eq!(13, l_draw);
     }
     
     #[test]
     fn test_last_winning_sum() {
-	let (sum, _) = run(false, read_input(get_input()));
+	let (sum, _) = run(false, parse_input(get_input()));
 	assert_eq!(148, sum);
     }
 }
