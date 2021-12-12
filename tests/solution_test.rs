@@ -219,3 +219,24 @@ mod day7 {
 	assert_eq!((168, 5), calc_min_pos(false, parse_input(get_input())));
     }
 }
+
+mod day8 {
+    use aoc2021::puzzles::day08::*;
+
+    fn get_input() -> &'static str {
+	include_str!("day08.txt")
+    }
+
+    fn get_oneline_input() -> &'static str {
+	"acedgfb cdfbe gcdfa fbcad dab cefabd \
+	 cdfgeb eafb cagedb ab | \
+	 cdfeb fcadb cdfeb cdbaf"
+    }
+
+    #[test]
+    fn test_read_input() {
+	let vec = read_input(get_input());
+	assert_eq!("cdgabef", vec[2].get_clues()[9]);
+	assert_eq!("gbcadfe", vec[6].get_out()[3]); 
+    }
+}
