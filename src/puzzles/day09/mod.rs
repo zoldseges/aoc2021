@@ -1,4 +1,4 @@
-use crate::utils::Matrix;
+use crate::utils::matrix::Matrix;
 
 pub fn name() -> Option<String> {
     None
@@ -17,7 +17,6 @@ fn get_solution_p1(input: &str) -> u32{
     99
 }
 
-
 fn parse_input(input: &str) -> Vec<Vec<u8>> {
     let mut res = Vec::new();
     for line in input.lines() {
@@ -28,6 +27,10 @@ fn parse_input(input: &str) -> Vec<Vec<u8>> {
 	res.push(line_vec);
     }
     res
+}
+
+fn count_low_points<T>(m: Matrix<T>) -> u32 {
+    9
 }
 
 #[cfg(test)]
@@ -51,4 +54,6 @@ mod tests {
 	assert_eq!(Some(7), matrix.get(4, 2));
 	assert_eq!(None, matrix.get(1, 99));
     }
+
+    
 }
