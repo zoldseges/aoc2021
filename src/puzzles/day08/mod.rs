@@ -287,6 +287,7 @@ mod tests {
 	assert_eq!(5353, trans_line(&vec[0]));
     }
 
+    #[test]
     fn test_part_2() {
 	assert_eq!(61229, get_solution_p2(get_input()));
     }

@@ -1,4 +1,3 @@
-pub mod utils;
 pub mod puzzles;
 
 mod get_puzzles;
