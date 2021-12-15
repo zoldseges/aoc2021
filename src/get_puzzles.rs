@@ -95,15 +95,6 @@ pub fn get_puzzles() -> Vec<Puzzle> {
     };
     vec.push(puzzle);
     let puzzle = Puzzle {
-	day: 10,
-	name: puzzles::day10::name(),
-	solve_p1: puzzles::day10::solve_p1,
-	solve_p2: puzzles::day10::solve_p2,
-	solution_p1: None,
-	solution_p2: None,
-    };
-    vec.push(puzzle);
-    let puzzle = Puzzle {
 	day: 11,
 	name: puzzles::day11::name(),
 	solve_p1: puzzles::day11::solve_p1,
