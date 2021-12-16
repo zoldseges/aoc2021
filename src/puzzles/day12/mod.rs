@@ -1,4 +1,4 @@
-use std::collections::{HashSet, HashMap};
+use std::collections::HashSet;
 use crate::utils::graph::Graph;
 
 pub fn name() -> Option<String> {
@@ -12,7 +12,9 @@ pub fn solve_p1() -> Option<String> {
 }
 
 pub fn solve_p2() -> Option<String> {
-    None
+    let input = include_str!("input.txt");
+    let g = parse_input(input);
+    Some(g.count_paths_p2().to_string())
 }
 
 fn parse_input(input: &str) -> Graph {
@@ -49,12 +51,10 @@ impl<'a> Graph<'a> {
     }
 
     pub fn count_paths_p2(&self) -> u32 {
-	let mut visited = HashMap::new();
-	visited.insert("start", 2);
-	self.traverse_p2("start", visited)
+	self.traverse_p2("start", HashSet::new(), false)
     }
 
-    fn traverse_p2(&self, pos: &'a str, mut visited: HashMap<&'a str, u8>) -> u32 {
+    fn traverse_p2(&self, pos: &'a str, mut visited: HashSet<&'a str>, small_visited: bool) -> u32 {
 	let mut cont = 0;
 	if pos == "end" {
 	    return 1;
@@ -62,24 +62,19 @@ impl<'a> Graph<'a> {
 	
 	if let Some(t) = pos.chars().next() {
 	    if t.is_ascii_lowercase() {
-		let c = visited.entry(pos).or_insert(0);
-		*c += 1;
+		visited.insert(pos);
 	    }
 	}
-	let mut legal_adjs = HashSet::new();
-	let mut flag = true;
+
 	for id in self.get_adjs(pos).unwrap() {
-	    if let Some(t) = visited.get(id) {
-		if t == &1 && flag {
-		    legal_adjs.insert(id);
-		    flag = false;
+	    if visited.contains(id) {
+		if !small_visited && id != &"start" {
+		    let small_visited = true;
+		    cont += self.traverse_p2(id, visited.clone(), small_visited);
 		}
 	    } else {
-		legal_adjs.insert(id);
+		cont += self.traverse_p2(id, visited.clone(), small_visited);
 	    }
-	}
-	for id in legal_adjs {
-	    cont += self.traverse_p2(id, visited.clone());
 	}
 	cont
     }
@@ -119,6 +114,6 @@ mod tests {
 	let g = parse_input(get_input_1());
 	assert_eq!(103, g.count_paths_p2());
 	let g = parse_input(get_input_2());
-	assert_eq!(3059, g.count_paths_p2());
+	assert_eq!(3509, g.count_paths_p2());
     }
 }
