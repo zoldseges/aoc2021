@@ -85,7 +85,9 @@ impl Iterator for Line {
 }
 
 fn str_to_line(s: &str) -> Line {
-    let sp: Vec<&str> = s.split(&[',', '-', '>']).collect();
+    let sp: Vec<&str> = s.split(
+	|x| { x == ',' || x == '-' || x == '>'}).
+	collect();
     Line::new(sp[0].trim().parse().unwrap(),
 	      sp[1].trim().parse().unwrap(),
 	      sp[sp.len()-2].trim().parse().unwrap(),
