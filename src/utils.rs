@@ -133,3 +133,42 @@ pub mod matrix {
 	}
     }
 }
+
+pub mod graph {
+
+    use std::collections::HashMap;
+    use std::collections::HashSet;
+
+    pub struct Graph<'a> {
+	nodes: HashMap<&'a str, Node<'a>>
+    }
+
+    struct Node<'a> {
+	cons: HashSet<&'a str>,
+    }
+    
+    impl<'a> Graph<'a> {
+	
+	pub fn new() -> Graph<'a> {
+	    Graph { nodes: HashMap::new() }
+	}
+
+	fn get(&self, id: &str) -> Option<&Node<'a>> {
+	    self.nodes.get(id)
+	}
+
+	pub fn get_adjs(&self, id: &str) -> Option<&HashSet<&'a str>> {
+	    match self.get(id) {
+		Some(t) => Some(&t.cons),
+		None => None,
+	    }
+	}
+
+	pub fn insert_conn(&mut self, from: &'a str, to: &'a str) {
+	    self.nodes.entry(from).or_insert(Node {cons: HashSet::new()}).
+		cons.insert(to);
+	    self.nodes.entry(to).or_insert(Node {cons: HashSet::new()}).
+		cons.insert(from);
+	}
+    }
+}
