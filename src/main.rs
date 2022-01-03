@@ -1,25 +1,9 @@
-use std::sync::mpsc;
-use std::thread;
 use aoc2021::init as init;
 
 fn main() {
     let vec = init();
-    let (tx, rx) = mpsc::channel();
-    //TODO implement spawning 3-4 threads instead
     for mut puzzle in vec {
-	let thread_tx = tx.clone();
-	thread::spawn(move || {
-	    puzzle.solve();
-	    thread_tx.send(puzzle).unwrap();
-	});
-    }
-    drop(tx);
-    let mut vec = Vec::new();
-    for received in rx {
-	vec.push(received);
-    }
-
-    for puzzle in vec {
+	puzzle.solve();
 	if let (None, None) = (puzzle.get_solution_part1(), puzzle.get_solution_part2()) {
 	    continue;
 	}
